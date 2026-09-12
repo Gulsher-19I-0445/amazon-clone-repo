@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { BuyBox } from "@/components/BuyBox";
+import { CUSTOMER_REVIEWS_ID, CustomerReviews } from "@/components/CustomerReviews";
 import { ImageGallery } from "@/components/ImageGallery";
 import { PriceBlock } from "@/components/PriceBlock";
 import { ProductCarouselSkeleton } from "@/components/ProductCarousel";
@@ -56,9 +57,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <h1 className="text-2xl font-medium leading-snug">{product.name}</h1>
             <div className="mt-1 flex items-center gap-2 text-sm">
               <StarRating rating={product.rating} />
-              <span className="text-amz-link">
+              <a href={`#${CUSTOMER_REVIEWS_ID}`} className="text-amz-link hover:text-amz-link-hover hover:underline">
                 {product.reviewCount.toLocaleString("en-US")} {product.reviewCount === 1 ? "rating" : "ratings"}
-              </span>
+              </a>
             </div>
 
             <hr className="my-3 border-amz-border" />
@@ -81,6 +82,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <Suspense fallback={<ProductCarouselSkeleton />}>
           <RelatedProducts category={product.category} productId={product.id} />
         </Suspense>
+
+        <CustomerReviews product={product} />
       </div>
     </main>
   );
