@@ -99,7 +99,7 @@
     {
       "id": "F4",
 
-      "status": "in_progress",
+      "status": "completed",
       "name": "Product Detail Page (PDP)",
       "page": "/product/[id]",
       "priority": "must_have",
