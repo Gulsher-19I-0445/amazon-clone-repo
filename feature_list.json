@@ -207,7 +207,7 @@
     {
       "id": "F11",
 
-      "status": "in_progress",
+      "status": "completed",
       "name": "Responsive Mobile Polish",
       "description": "Pass over breakpoints to ensure header, grids, and cart drawer behave correctly on small screens.",
       "estimated_hours": 1,
