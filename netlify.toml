@@ -4,3 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Declared explicitly: auto-detection did not run on this site, which left the
+# raw .next folder deployed as static files (every route 404'd).
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
