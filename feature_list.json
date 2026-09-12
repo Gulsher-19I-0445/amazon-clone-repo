@@ -187,7 +187,7 @@
     {
       "id": "F9",
 
-      "status": "in_progress",
+      "status": "completed",
       "name": "Product Reviews & Ratings Display",
       "description": "Static/seeded star rating and a few mock reviews shown on the PDP (read-only, no submission form).",
       "estimated_hours": 0.5,
