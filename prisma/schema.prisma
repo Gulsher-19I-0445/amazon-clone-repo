@@ -1,0 +1,32 @@
+generator client {
+  provider      = "prisma-client-js"
+  // "native" for local dev; rhel-openssl-3.0.x is what Netlify's Lambda runtime needs.
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  description    String
+  /// Category slug, e.g. "mens-shirts". Labels live in lib/categories.ts.
+  category       String
+  priceCents     Int
+  /// Strike-through "List Price" when the product is discounted.
+  listPriceCents Int?
+  rating         Float
+  reviewCount    Int
+  stock          Int
+  images         String[]
+  thumbnail      String
+  featured       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([category])
+}
