@@ -61,7 +61,7 @@
     {
       "id": "F2",
 
-      "status": "not_started",
+      "status": "in_progress",
       "name": "Homepage",
       "page": "/",
       "priority": "must_have",
