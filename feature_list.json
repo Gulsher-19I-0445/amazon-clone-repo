@@ -16,8 +16,8 @@
       "frontend": "Next.js (App Router) + TypeScript + Tailwind CSS",
       "state_management": "Zustand (cart, persisted to localStorage)",
       "backend": "Next.js Route Handlers",
-      "database": "PostgreSQL via Neon or Vercel Postgres + Prisma ORM - NOT file-based SQLite, which does not persist across Vercel's serverless function invocations",
-      "deployment": "Vercel - REQUIRED per brief, and should be stood up early (even as an empty scaffold) rather than left to the end"
+      "database": "PostgreSQL via Neon + Prisma ORM - NOT file-based SQLite, which does not persist across Netlify's serverless function invocations",
+      "deployment": "Netlify - REQUIRED per brief, and should be stood up early (even as an empty scaffold) rather than left to the end"
     },
     "estimated_total_hours_must_have": 10
   },
@@ -132,7 +132,7 @@
       "components": ["AddressForm", "MockPaymentStep", "OrderSummary", "ConfirmationPage"],
       "data_layer": {
         "type": "db_write",
-        "details": "POST creates Order + related OrderItem rows from the current cart contents via Prisma against Postgres (Neon/Vercel Postgres) - must be a network-reachable DB, not local SQLite, since this needs to work for a real anonymous visitor on the deployed live link. Cart is cleared client-side on success."
+        "details": "POST creates Order + related OrderItem rows from the current cart contents via Prisma against Postgres (Neon Postgres) - must be a network-reachable DB, not local SQLite, since this needs to work for a real anonymous visitor on the deployed live link. Cart is cleared client-side on success."
       },
       "api_endpoints": ["POST /api/orders", "GET /api/orders/[id]"],
       "state_management": "Form state local to checkout; clears Zustand cart store after successful order creation",

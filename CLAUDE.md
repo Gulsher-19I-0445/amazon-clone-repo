@@ -24,9 +24,9 @@ You are rebuilding a live product amazon.com. Prioritize readability when writin
  
 - Next.js (App Router) + TypeScript + Tailwind CSS
 - Zustand for client state (cart only)
-- Prisma ORM against Postgres (Neon or Vercel Postgres) - **not** SQLite,
-  file-based SQLite does not persist on Vercel's serverless functions
-- Deployment: Vercel
+- Prisma ORM against Postgres (Neon Postgres) - **not** SQLite,
+  file-based SQLite does not persist on Netlify's serverless functions
+- Deployment: Netlify
 
 
 ## Coding standards
@@ -72,7 +72,7 @@ Run through this so your agent captures its prompts and responses into the repos
 ## Definition of done (per feature)
  
 A feature from `feature_list.json` is done when:
-- It works on the deployed Vercel URL, not just localhost
+- It works on the deployed Netlify URL, not just localhost
 - Its listed edge cases have a visible UI state
 - Relevant `.agent-logs/` are committed
 - If it's a must-have with meaningful logic (cart, checkout), it has a

@@ -2,8 +2,9 @@ node_modules/
 .next/
 .env
 .env.local
-.vercel
+.netlify
 
 # Hook internal working state — not part of the graded .agent-logs capture
 .claude/hooks/_state/
 .claude/hooks/_debug/
+.neon
