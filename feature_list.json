@@ -156,7 +156,7 @@
     {
       "id": "F7",
 
-      "status": "not_started",
+      "status": "in_progress",
       "name": "Footer",
       "page": "Global (all pages)",
       "priority": "must_have",
