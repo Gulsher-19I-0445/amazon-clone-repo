@@ -41,9 +41,16 @@ Search, category browsing and deals all land on `/s`, like amazon.com. The URL i
 `page`, `deals=true`); `lib/catalog.ts` parses it into a Prisma query and `GET /api/products` accepts the
 same params. Filters are plain links and a GET form, so the page works without JavaScript.
 
+## Cart (`/cart`)
+
+Fully client-side: `store/cart.ts` (Zustand + `persist`) keeps the cart in this browser's `localStorage`, so it
+survives refresh and needs no login. All math is in `lib/cart.ts` (unit-tested). Setting a line's quantity to
+`0 (Delete)` removes it, like amazon.com. The "FREE Shipping" line uses Amazon's $35 threshold but is cosmetic —
+nothing is ever charged for shipping.
+
 ## Intentional scope cuts
 
 - **No real payments** — checkout has a mock payment step; orders are still written to Postgres.
 - **No real authentication** — the account menu is a visual stub. The live link must work for someone who is not signed in.
 - **No search relevance ranking** — search is a case-insensitive substring match on name/category in SQL (Prisma `contains`).
-- **Cart prices are snapshotted** when an item is added; a later price change on the product is not reflected in an existing cart line.
+- **Cart price and stock are snapshotted** when an item is added and only refreshed if the same product is added again; the cart page never re-fetches, so a later price or stock change on the product is not reflected in an existing line.

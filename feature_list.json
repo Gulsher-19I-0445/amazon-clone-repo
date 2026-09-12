@@ -118,7 +118,7 @@
     {
       "id": "F5",
 
-      "status": "not_started",
+      "status": "in_progress",
       "name": "Cart",
       "page": "/cart (or slide-out drawer)",
       "priority": "must_have",

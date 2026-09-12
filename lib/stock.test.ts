@@ -31,6 +31,12 @@ describe("quantityOptions", () => {
   it("is empty when nothing can be bought", () => {
     expect(quantityOptions(0)).toEqual([]);
   });
+
+  it("accepts a higher cap so a cart line above the per-add cap stays selectable", () => {
+    expect(quantityOptions(99, 14)).toHaveLength(14);
+    // Stock still wins over the cap.
+    expect(quantityOptions(5, 14)).toEqual([1, 2, 3, 4, 5]);
+  });
 });
 
 describe("addableQuantity", () => {

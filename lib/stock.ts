@@ -22,9 +22,13 @@ export function stockStatus(stock: number): StockStatus {
   return { kind: "in_stock", label: "In Stock" };
 }
 
-/** 1..min(stock, MAX_QTY_PER_ADD); empty when nothing can be bought. */
-export function quantityOptions(stock: number): number[] {
-  const max = Math.min(Math.floor(stock), MAX_QTY_PER_ADD);
+/**
+ * 1..min(stock, cap); empty when nothing can be bought. The cart page raises
+ * `cap` to the line's current quantity so repeated adds (which can push a line
+ * past MAX_QTY_PER_ADD) still appear in its dropdown.
+ */
+export function quantityOptions(stock: number, cap = MAX_QTY_PER_ADD): number[] {
+  const max = Math.min(Math.floor(stock), Math.floor(cap));
   return Array.from({ length: Math.max(0, max) }, (_, i) => i + 1);
 }
 

@@ -48,3 +48,11 @@ export function itemCount(items: CartItem[]): number {
 export function subtotalCents(items: CartItem[]): number {
   return items.reduce((sum, line) => sum + line.priceCents * line.qty, 0);
 }
+
+/** Amazon's non-Prime free shipping threshold ($35). Cosmetic: no shipping is ever charged. */
+export const FREE_SHIPPING_THRESHOLD_CENTS = 3500;
+
+/** How much more must be added to qualify for free shipping; 0 once qualified. */
+export function freeShippingGapCents(subtotal: number): number {
+  return Math.max(0, FREE_SHIPPING_THRESHOLD_CENTS - subtotal);
+}

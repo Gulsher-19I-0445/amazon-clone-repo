@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { addItem, itemCount, removeItem, subtotalCents, updateQuantity } from "./cart";
+import {
+  addItem,
+  FREE_SHIPPING_THRESHOLD_CENTS,
+  freeShippingGapCents,
+  itemCount,
+  removeItem,
+  subtotalCents,
+  updateQuantity,
+} from "./cart";
 import type { CartItem } from "./types";
 
 const phone = { productId: "p1", name: "Phone", priceCents: 49999, thumbnail: "", stock: 10 };
@@ -77,5 +85,16 @@ describe("totals", () => {
   it("are zero for an empty cart", () => {
     expect(itemCount([])).toBe(0);
     expect(subtotalCents([])).toBe(0);
+  });
+});
+
+describe("freeShippingGapCents", () => {
+  it("reports how far a small subtotal is from the threshold", () => {
+    expect(freeShippingGapCents(1000)).toBe(FREE_SHIPPING_THRESHOLD_CENTS - 1000);
+  });
+
+  it("is zero at and above the threshold", () => {
+    expect(freeShippingGapCents(FREE_SHIPPING_THRESHOLD_CENTS)).toBe(0);
+    expect(freeShippingGapCents(99999)).toBe(0);
   });
 });
