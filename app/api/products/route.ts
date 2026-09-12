@@ -1,22 +1,21 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { productListSelect } from "@/lib/products";
-import type { ProductListResponse } from "@/lib/types";
+import { PAGE_SIZE, parseCatalogQuery } from "@/lib/catalog";
+import { getCatalogPage } from "@/lib/products";
+import type { CatalogResponse } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/products            -> whole catalog
-// GET /api/products?featured=true -> curated homepage subset
+// GET /api/products?k=&category=&minPrice=&maxPrice=&sort=&page=&deals=true
+// Same URL contract as the /s page (see lib/catalog.ts). `featured=true` is
+// kept as an alias for `deals=true` since F2 documented it.
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const featuredOnly = searchParams.get("featured") === "true";
+  const raw = Object.fromEntries(searchParams);
+  if (raw.featured === "true") raw.deals = "true";
 
-  const products = await db.product.findMany({
-    where: featuredOnly ? { featured: true } : undefined,
-    orderBy: { name: "asc" },
-    select: productListSelect,
-  });
+  const query = parseCatalogQuery(raw);
+  const { products, total } = await getCatalogPage(query);
 
-  const body: ProductListResponse = { products };
+  const body: CatalogResponse = { products, total, page: query.page, pageSize: PAGE_SIZE };
   return NextResponse.json(body);
 }

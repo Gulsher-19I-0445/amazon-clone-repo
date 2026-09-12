@@ -4,8 +4,8 @@ import { categoryLabel, NAV_CATEGORY_SLUGS } from "@/lib/categories";
 const linkClass =
   "whitespace-nowrap rounded-sm border border-transparent px-2 py-1 text-sm hover:border-white";
 
-// Secondary dark row under the main header. Category links go to the search
-// page for now; F3 will point them at /category/[slug].
+// Secondary dark row under the main header. Every link lands on the listing
+// page (/s), which handles search, category and deals via URL params.
 export function NavBar() {
   return (
     <nav
@@ -18,7 +18,7 @@ export function NavBar() {
         </svg>
         All
       </Link>
-      <Link href="/s?k=deals" className={`${linkClass} font-bold text-amz-yellow`}>
+      <Link href="/s?deals=true" className={`${linkClass} font-bold text-amz-yellow`}>
         Today&apos;s Deals
       </Link>
       {NAV_CATEGORY_SLUGS.map((slug) => (

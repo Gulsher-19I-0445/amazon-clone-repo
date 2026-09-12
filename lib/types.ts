@@ -25,6 +25,13 @@ export type ProductListResponse = {
   products: ProductListItem[];
 };
 
+/** GET /api/products — one page of the filtered catalog. */
+export type CatalogResponse = ProductListResponse & {
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
 export type CartItem = {
   productId: string;
   name: string;

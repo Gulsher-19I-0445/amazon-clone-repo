@@ -1,5 +1,6 @@
 import "server-only";
 import type { Prisma } from "@prisma/client";
+import { buildProductOrderBy, buildProductWhere, PAGE_SIZE, type CatalogQuery } from "./catalog";
 import { db } from "./db";
 import type { TileQuadrantProduct } from "./homepage";
 import type { ProductListItem } from "./types";
@@ -19,6 +20,28 @@ export const productListSelect = {
   thumbnail: true,
   featured: true,
 } satisfies Prisma.ProductSelect;
+
+export type CatalogPage = {
+  products: ProductListItem[];
+  /** Total rows matching the filters, across all pages. */
+  total: number;
+};
+
+/** One page of the listing page (/s): filtered, sorted and paginated in Postgres. */
+export async function getCatalogPage(q: CatalogQuery): Promise<CatalogPage> {
+  const where = buildProductWhere(q);
+  const [products, total] = await Promise.all([
+    db.product.findMany({
+      where,
+      orderBy: buildProductOrderBy(q),
+      skip: (q.page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+      select: productListSelect,
+    }),
+    db.product.count({ where }),
+  ]);
+  return { products, total };
+}
 
 export function getFeaturedProducts(): Promise<ProductListItem[]> {
   return db.product.findMany({

@@ -80,9 +80,9 @@
     {
       "id": "F3",
 
-      "status": "not_started",
+      "status": "in_progress",
       "name": "Product Listing Page (PLP)",
-      "page": "/products or /category/[slug]",
+      "page": "/s (shared with header search, like amazon.com)",
       "priority": "must_have",
       "description": "Grid of products with filter by category and price range, and sort by price or rating.",
       "components": ["ProductGrid", "ProductCard", "FilterSidebar", "SortDropdown", "Pagination"],

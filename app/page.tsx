@@ -41,11 +41,11 @@ export default function HomePage() {
         </Suspense>
 
         <Suspense fallback={<ProductCarouselSkeleton />}>
-          <HomeProductRail title="Today's Deals" seeAllHref="/s" variant="deals" loadProducts={loadDeals} />
+          <HomeProductRail title="Today's Deals" seeAllHref="/s?deals=true" variant="deals" loadProducts={loadDeals} />
         </Suspense>
 
         <Suspense fallback={<ProductCarouselSkeleton />}>
-          <HomeProductRail title="Top picks for you" seeAllHref="/s" loadProducts={loadTopPicks} />
+          <HomeProductRail title="Top picks for you" seeAllHref="/s?sort=rating-desc" loadProducts={loadTopPicks} />
         </Suspense>
 
         <Suspense fallback={<CategoryTileGridSkeleton />}>
