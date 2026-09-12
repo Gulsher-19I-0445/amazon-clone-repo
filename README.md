@@ -48,6 +48,22 @@ survives refresh and needs no login. All math is in `lib/cart.ts` (unit-tested).
 `0 (Delete)` removes it, like amazon.com. The "FREE Shipping" line uses Amazon's $35 threshold but is cosmetic —
 nothing is ever charged for shipping.
 
+## Checkout (`/checkout` → `/order/[id]/confirmation`)
+
+Amazon's single-page flow: shipping address, payment method, review items, with "Place your order" in the
+summary card. Submitting `POST /api/orders` writes a real `Order` + `OrderItem` rows to Neon Postgres in one
+nested Prisma create; the confirmation page (and `GET /api/orders/[id]`) reads that order back.
+
+- **The server prices the order.** The browser only sends `{ productId, qty }` per line; prices, names and
+  thumbnails are re-read from the database and snapshotted onto each `OrderItem`, so an old or edited
+  `localStorage` cart can't buy at the wrong price. Quantities above stock come back as a 409 that lists the
+  affected items; the cart is only cleared after a 201.
+- **Address validation** (`lib/checkout.ts`) runs on both the form and the endpoint. Country is fixed to the US.
+- **Payment is a mock**: a choice between three demo cards, stored as brand + last four only. No card number exists anywhere.
+- **Totals**: shipping is always free; "Estimated tax" is a flat 8% for realism. Both are cosmetic.
+- **Stock is not decremented** when an order is placed, so demo orders never make products unavailable for the next visitor.
+- Confirmation links are public by unguessable id (`cuid`) because there are no accounts to tie orders to.
+
 ## Intentional scope cuts
 
 - **No real payments** — checkout has a mock payment step; orders are still written to Postgres.

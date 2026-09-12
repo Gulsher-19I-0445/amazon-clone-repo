@@ -137,7 +137,7 @@
     {
       "id": "F6",
 
-      "status": "not_started",
+      "status": "in_progress",
       "name": "Checkout & Order Confirmation",
       "page": "/checkout -> /order/[id]/confirmation",
       "priority": "must_have",

@@ -40,3 +40,54 @@ export type CartItem = {
   stock: number;
   qty: number;
 };
+
+/** Every field the checkout address form collects. Country is fixed to the US. */
+export type ShippingAddress = {
+  email: string;
+  fullName: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+};
+
+/** POST /api/orders body. Prices are deliberately absent: the server re-reads them. */
+export type CreateOrderRequest = {
+  address: ShippingAddress;
+  paymentMethodId: string;
+  items: { productId: string; qty: number }[];
+};
+
+export type CreateOrderResponse = {
+  orderId: string;
+};
+
+export type OrderItemDto = {
+  productId: string;
+  name: string;
+  thumbnail: string;
+  unitPriceCents: number;
+  qty: number;
+};
+
+/** GET /api/orders/[id] and the confirmation page. */
+export type OrderDto = {
+  id: string;
+  address: ShippingAddress;
+  payment: { brand: string; last4: string };
+  subtotalCents: number;
+  shippingCents: number;
+  taxCents: number;
+  totalCents: number;
+  /** ISO timestamp — Dates never cross the network. */
+  createdAt: string;
+  items: OrderItemDto[];
+};
+
+/** Error body shared by the order endpoints. `items` names the lines a 409 is about. */
+export type OrderErrorResponse = {
+  error: string;
+  items?: { productId: string; name: string; available: number }[];
+};

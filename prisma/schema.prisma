@@ -30,3 +30,41 @@ model Product {
 
   @@index([category])
 }
+
+/// A placed order. Address, payment and totals are stored as they were at
+/// checkout so the confirmation page never depends on later catalog changes.
+model Order {
+  id            String      @id @default(cuid())
+  email         String
+  fullName      String
+  phone         String
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  state         String
+  postalCode    String
+  country       String      @default("US")
+  /// Snapshot of the mock payment method, e.g. "Visa" ending in "4242".
+  paymentBrand  String
+  paymentLast4  String
+  subtotalCents Int
+  shippingCents Int
+  taxCents      Int
+  totalCents    Int
+  createdAt     DateTime    @default(now())
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id             String @id @default(cuid())
+  orderId        String
+  order          Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  /// Plain id, no FK: items are snapshots, so reseeding or removing a product never blocks on old orders.
+  productId      String
+  name           String
+  thumbnail      String
+  unitPriceCents Int
+  qty            Int
+
+  @@index([orderId])
+}
