@@ -41,6 +41,11 @@ export type CatalogQuery = {
   deals: boolean;
   /** Set when min > max was requested; both bounds are dropped so the UI can explain. */
   invalidPriceRange?: { min: number; max: number };
+  /**
+   * Product id to leave out (`?exclude=`), used by the PDP's related-products
+   * query. API-only: it is never a listing-page filter, so catalogHref ignores it.
+   */
+  excludeId?: string;
 };
 
 /** Shape Next hands to `page.tsx` as `searchParams`; repeated keys arrive as arrays. */
@@ -83,6 +88,7 @@ export function parseCatalogQuery(raw: RawSearchParams): CatalogQuery {
     page: Number.isInteger(page) && page >= 1 ? page : 1,
     deals: first(raw.deals) === "true",
     invalidPriceRange,
+    excludeId: first(raw.exclude) || undefined,
   };
 }
 
@@ -98,6 +104,7 @@ export function buildProductWhere(q: CatalogQuery): Prisma.ProductWhereInput {
   }
   if (q.category) where.category = q.category;
   if (q.deals) where.featured = true;
+  if (q.excludeId) where.id = { not: q.excludeId };
 
   if (q.minPrice !== undefined || q.maxPrice !== undefined) {
     where.priceCents = {

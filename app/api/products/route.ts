@@ -5,9 +5,10 @@ import type { CatalogResponse } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/products?k=&category=&minPrice=&maxPrice=&sort=&page=&deals=true
+// GET /api/products?k=&category=&minPrice=&maxPrice=&sort=&page=&deals=true&exclude=<id>
 // Same URL contract as the /s page (see lib/catalog.ts). `featured=true` is
-// kept as an alias for `deals=true` since F2 documented it.
+// kept as an alias for `deals=true` since F2 documented it; `exclude` leaves
+// one product out (related-products lookups from the PDP).
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const raw = Object.fromEntries(searchParams);

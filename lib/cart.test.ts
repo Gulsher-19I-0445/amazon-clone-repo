@@ -22,6 +22,12 @@ describe("addItem", () => {
     expect(items[0]?.qty).toBe(2);
   });
 
+  it("refreshes a persisted line's price and stock from the incoming item", () => {
+    const stale = addItem([], { ...cable, priceCents: 500, stock: 1 });
+    const items = addItem(stale, cable, 1);
+    expect(items[0]).toMatchObject({ priceCents: 999, stock: 2, qty: 2 });
+  });
+
   it("does not mutate the input array", () => {
     const original: CartItem[] = [];
     addItem(original, phone);

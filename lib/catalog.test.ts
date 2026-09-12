@@ -76,6 +76,11 @@ describe("parseCatalogQuery", () => {
     expect(q.invalidPriceRange).toEqual({ min: 100, max: 50 });
   });
 
+  it("reads an id to exclude and drops a blank one", () => {
+    expect(parseCatalogQuery({ exclude: "abc123" }).excludeId).toBe("abc123");
+    expect(parseCatalogQuery({ exclude: "  " }).excludeId).toBeUndefined();
+  });
+
   it("clamps the page to a positive integer", () => {
     expect(parseCatalogQuery({ page: "0" }).page).toBe(1);
     expect(parseCatalogQuery({ page: "-2" }).page).toBe(1);
@@ -104,6 +109,13 @@ describe("buildProductWhere", () => {
       { name: { contains: "mens shirts", mode: "insensitive" } },
       { category: { contains: "mens-shirts", mode: "insensitive" } },
     ]);
+  });
+
+  it("leaves out the excluded product (related-products query)", () => {
+    expect(buildProductWhere({ ...base, category: "beauty", excludeId: "abc123" })).toEqual({
+      category: "beauty",
+      id: { not: "abc123" },
+    });
   });
 });
 

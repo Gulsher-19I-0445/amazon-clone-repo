@@ -1,9 +1,10 @@
 import "server-only";
 import type { Prisma } from "@prisma/client";
+import { cache } from "react";
 import { buildProductOrderBy, buildProductWhere, PAGE_SIZE, type CatalogQuery } from "./catalog";
 import { db } from "./db";
 import type { TileQuadrantProduct } from "./homepage";
-import type { ProductListItem } from "./types";
+import type { Product, ProductListItem } from "./types";
 
 // Columns that make up a ProductListItem. Shared by every list-style read so
 // route handlers and server components return the same shape.
@@ -20,6 +21,31 @@ export const productListSelect = {
   thumbnail: true,
   featured: true,
 } satisfies Prisma.ProductSelect;
+
+/** Everything a ProductListItem has plus the long-form fields the PDP shows. */
+export const productDetailSelect = {
+  ...productListSelect,
+  description: true,
+  images: true,
+} satisfies Prisma.ProductSelect;
+
+/**
+ * Single product for the PDP, or null when the id is unknown. Wrapped in
+ * React's cache so generateMetadata and the page share one database read.
+ */
+export const getProductById = cache((id: string): Promise<Product | null> => {
+  return db.product.findUnique({ where: { id }, select: productDetailSelect });
+});
+
+/** Best-rated products in the same category, leaving out the one being viewed. */
+export function getRelatedProducts(category: string, excludeId: string, take = 12): Promise<ProductListItem[]> {
+  return db.product.findMany({
+    where: { category, id: { not: excludeId } },
+    orderBy: [{ rating: "desc" }, { reviewCount: "desc" }, { id: "asc" }],
+    take,
+    select: productListSelect,
+  });
+}
 
 export type CatalogPage = {
   products: ProductListItem[];

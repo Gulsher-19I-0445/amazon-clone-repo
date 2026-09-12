@@ -10,7 +10,11 @@ export function clampQuantity(qty: number, stock: number): number {
   return Math.max(1, Math.min(Math.floor(qty), stock));
 }
 
-/** Add `qty` of a product; merges into an existing line for the same product. */
+/**
+ * Add `qty` of a product; merges into an existing line for the same product.
+ * The incoming item's price/stock win over the persisted line's so a cart
+ * saved days ago follows what the product page currently shows.
+ */
 export function addItem(items: CartItem[], item: NewCartItem, qty = 1): CartItem[] {
   const existing = items.find((line) => line.productId === item.productId);
   if (!existing) {
@@ -18,7 +22,7 @@ export function addItem(items: CartItem[], item: NewCartItem, qty = 1): CartItem
   }
   return items.map((line) =>
     line.productId === item.productId
-      ? { ...line, qty: clampQuantity(line.qty + qty, line.stock) }
+      ? { ...line, ...item, qty: clampQuantity(line.qty + qty, item.stock) }
       : line,
   );
 }
