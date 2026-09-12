@@ -13,6 +13,11 @@ You are rebuilding a live product amazon.com. Prioritize readability when writin
   Only touch `nice_to_have_features` if all must-haves are done and
   deployed-working. Never build anything in `out_of_scope_features` - if
   asked to add one, point back at the documented reason it was cut.
+- Every feature in `feature_list.json` has a `status` field
+  (`not_started` | `in_progress` | `completed`). Set it to `in_progress`
+  when starting a feature and to `completed` only once it meets the
+  Definition of done below (deployed and verified on the live URL). Commit
+  the status change together with the feature's final commit.
 - `.agent-logs/` must be committed incrementally throughout the build, not
   in one lump at the end. Remind me to commit it after each meaningful
   chunk of work if I forget.
