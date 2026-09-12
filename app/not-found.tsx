@@ -1,19 +1,18 @@
 import Link from "next/link";
 
-// Placeholder until F2 builds the real homepage.
-export default function HomePage() {
+export default function NotFound() {
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-16">
       <div className="max-w-md rounded-md bg-white p-8 text-center shadow-sm">
-        <h1 className="text-2xl font-medium">Welcome to the storefront</h1>
+        <h1 className="text-2xl font-medium">Looking for something?</h1>
         <p className="mt-2 text-sm text-neutral-700">
-          The homepage is coming soon. In the meantime, search above or browse everything.
+          We&apos;re sorry. The page you requested could not be found.
         </p>
         <Link
-          href="/s"
+          href="/"
           className="mt-4 inline-block rounded-lg bg-amz-yellow px-6 py-2 text-sm font-medium hover:bg-amz-yellow-hover"
         >
-          Browse all products
+          Go to the home page
         </Link>
       </div>
     </main>
