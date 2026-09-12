@@ -20,11 +20,13 @@ export function SearchBar() {
   const [query, setQuery] = useState(params.get("k") ?? "");
   const [category, setCategory] = useState(params.get("category") ?? "");
 
-  // Autocomplete state. The product index is only fetched after the first focus.
-  const [hasFocused, setHasFocused] = useState(false);
+  // Autocomplete state. The product index is only fetched once the visitor
+  // touches the box. Typing counts too: a focus that lands before React has
+  // hydrated is never seen, and the dropdown must still work afterwards.
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const index = useSuggestionIndex(hasFocused);
+  const index = useSuggestionIndex(hasInteracted);
   const suggestions = matchSuggestions(index ?? [], query, category);
   const showSuggestions = open && index !== null && query.trim() !== "";
 
@@ -131,10 +133,11 @@ export function SearchBar() {
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
+            setHasInteracted(true);
             setOpen(true);
             setActiveIndex(-1);
           }}
-          onFocus={() => setHasFocused(true)}
+          onFocus={() => setHasInteracted(true)}
           onBlur={closeSuggestions}
           onKeyDown={handleKeyDown}
           placeholder="Search Amazon"
