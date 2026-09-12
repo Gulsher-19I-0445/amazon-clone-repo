@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/* Amazon's palette, exposed as Tailwind theme tokens (bg-amz-navy, text-amz-orange, ...) */
+@theme {
+  --color-amz-navy: #131921;
+  --color-amz-navy-light: #232f3e;
+  --color-amz-orange: #ff9900;
+  --color-amz-orange-dark: #e47911;
+  --color-amz-search: #febd69;
+  --color-amz-search-hover: #f3a847;
+  --color-amz-yellow: #ffd814;
+  --color-amz-yellow-hover: #f7ca00;
+  --color-amz-link: #007185;
+  --color-amz-link-hover: #c7511f;
+  --color-amz-star: #de7921;
+  --color-amz-bg: #eaeded;
+  --color-amz-price: #b12704;
+  --color-amz-border: #ddd;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-amz-bg);
+  color: #0f1111;
+  font-family:
+    "Amazon Ember",
+    Arial,
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
+}
