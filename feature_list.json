@@ -197,7 +197,7 @@
     {
       "id": "F10",
 
-      "status": "in_progress",
+      "status": "completed",
       "name": "Wishlist",
       "description": "Heart icon on product cards/PDP to save items to a separate client-side list.",
       "estimated_hours": 1,
