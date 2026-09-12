@@ -1,0 +1,235 @@
+{
+  "meta": {
+    "project": "Amazon.com Clone",
+    "context": "8x Engineer assignment - 24 hour window",
+    "brief_specific_notes": {
+      "judging_criteria": "This brief is judged on Speed (how much working product you reached), Product judgment (what you built first / left out), and UX & UI (quality of the experience). No explicit code-architecture line item is stated for this brief - keep code clean for your own sanity, but prioritize breadth and polish over architectural purity.",
+      "deployment": "REQUIRED. Live link must be deployed and open to a visitor who is not signed in as you - not a localhost recording.",
+      "submission_deliverables": [
+        "Live link (deployed, works for an anonymous visitor)",
+        "Public GitHub repository with .agent-logs/ committed incrementally throughout the build, not in one lump",
+        "Walkthrough video: Loom or similar, camera on, 5 minutes maximum, placed in the walkthrough field",
+        "Live link and repo link both pasted into the links field, each labeled"
+      ]
+    },
+    "tech_stack": {
+      "frontend": "Next.js (App Router) + TypeScript + Tailwind CSS",
+      "state_management": "Zustand (cart, persisted to localStorage)",
+      "backend": "Next.js Route Handlers",
+      "database": "PostgreSQL via Neon or Vercel Postgres + Prisma ORM - NOT file-based SQLite, which does not persist across Vercel's serverless function invocations",
+      "deployment": "Vercel - REQUIRED per brief, and should be stood up early (even as an empty scaffold) rather than left to the end"
+    },
+    "estimated_total_hours_must_have": 10
+  },
+  "pre_build_checklist": [
+    {
+      "id": "P1",
+      "name": "Research the live product",
+      "description": "Sign up on real amazon.com and go through every core flow end-to-end (browse, search, PDP, cart, checkout, orders). Screenshot as you go, before writing any code.",
+      "estimated_hours": 0.5,
+      "gate": false
+    },
+    {
+      "id": "P2",
+      "name": "Agent capture setup",
+      "description": "Follow the brief's '8x agent capture setup' link and confirm the capture test passes before starting to build. Hard gate per the brief.",
+      "estimated_hours": 0.17,
+      "gate": true
+    }
+  ],
+  "must_have_features": [
+    {
+      "id": "F1",
+      "name": "Header / Navigation",
+      "page": "Global (all pages)",
+      "priority": "must_have",
+      "description": "Persistent top nav with logo, client-side search input, cart icon showing live item count, and an account/sign-in stub (no real auth).",
+      "components": ["Header", "SearchBar", "CartIcon", "AccountMenuStub"],
+      "data_layer": {
+        "type": "client_only",
+        "details": "Search filters the in-memory product list fetched from /api/products; cart count reads from Zustand store."
+      },
+      "api_endpoints": [],
+      "state_management": "Reads cart item count from global Zustand store",
+      "edge_cases": ["Empty search query", "No search results found", "Cart count = 0"],
+      "estimated_hours": 0.5,
+      "rubric_alignment": ["product_fidelity", "ux_ui"]
+    },
+    {
+      "id": "F2",
+      "name": "Homepage",
+      "page": "/",
+      "priority": "must_have",
+      "description": "Hero banner, category tiles grid, and 1-2 horizontally scrollable product carousels (e.g. 'Deals', 'Recommended').",
+      "components": ["HeroBanner", "CategoryTileGrid", "ProductCarousel"],
+      "data_layer": {
+        "type": "db_read",
+        "details": "Fetches a curated subset of products server-side for carousels/category tiles."
+      },
+      "api_endpoints": ["GET /api/products?featured=true"],
+      "state_management": "None (server component / server-fetched data)",
+      "edge_cases": ["Carousel with fewer items than a full row", "Slow/failed fetch -> skeleton or fallback state"],
+      "estimated_hours": 1.5,
+      "rubric_alignment": ["product_fidelity", "ux_ui"]
+    },
+    {
+      "id": "F3",
+      "name": "Product Listing Page (PLP)",
+      "page": "/products or /category/[slug]",
+      "priority": "must_have",
+      "description": "Grid of products with filter by category and price range, and sort by price or rating.",
+      "components": ["ProductGrid", "ProductCard", "FilterSidebar", "SortDropdown", "Pagination"],
+      "data_layer": {
+        "type": "db_read",
+        "details": "Query params (category, minPrice, maxPrice, sort) passed to API and translated into a Prisma query against Postgres."
+      },
+      "api_endpoints": ["GET /api/products?category=&minPrice=&maxPrice=&sort="],
+      "state_management": "URL search params as source of truth for filters/sort",
+      "edge_cases": ["No products match filters", "Invalid price range", "Single-page result (no pagination needed)"],
+      "estimated_hours": 1.5,
+      "rubric_alignment": ["product_fidelity", "speed"]
+    },
+    {
+      "id": "F4",
+      "name": "Product Detail Page (PDP)",
+      "page": "/product/[id]",
+      "priority": "must_have",
+      "description": "Image gallery, title/price/description, quantity selector, add-to-cart action, and a 'related products' rail.",
+      "components": ["ImageGallery", "PriceBlock", "QuantitySelector", "AddToCartButton", "RelatedProducts"],
+      "data_layer": {
+        "type": "db_read",
+        "details": "Fetch single product by id plus a small related-products query (same category, excluding current id)."
+      },
+      "api_endpoints": ["GET /api/products/[id]", "GET /api/products?category=&exclude="],
+      "state_management": "Local component state for selected quantity/image; dispatches to global cart store on add-to-cart",
+      "edge_cases": ["Product not found (404)", "Out of stock", "Quantity exceeds available stock"],
+      "estimated_hours": 1.5,
+      "rubric_alignment": ["product_fidelity", "ux_ui"]
+    },
+    {
+      "id": "F5",
+      "name": "Cart",
+      "page": "/cart (or slide-out drawer)",
+      "priority": "must_have",
+      "description": "Line items with thumbnail, quantity editor, remove action, and live subtotal calculation.",
+      "components": ["CartDrawer", "CartLineItem", "CartSummary"],
+      "data_layer": {
+        "type": "client_only",
+        "details": "Fully client-side; no DB write until checkout is submitted. Persisted to localStorage via Zustand middleware so it survives refresh, and works for any anonymous visitor since it is not tied to a login session."
+      },
+      "api_endpoints": [],
+      "state_management": "Zustand store: addItem, updateQuantity, removeItem, subtotal selector",
+      "edge_cases": ["Empty cart state", "Quantity set to 0 -> remove item", "Item price changes after being added (not handled, note in README)"],
+      "estimated_hours": 1.5,
+      "rubric_alignment": ["ux_ui"]
+    },
+    {
+      "id": "F6",
+      "name": "Checkout & Order Confirmation",
+      "page": "/checkout -> /order/[id]/confirmation",
+      "priority": "must_have",
+      "description": "Address form, a mock payment step (no real payment processor), and on submit a real Order + OrderItem record is created in the database. Confirmation page reads the created order back.",
+      "components": ["AddressForm", "MockPaymentStep", "OrderSummary", "ConfirmationPage"],
+      "data_layer": {
+        "type": "db_write",
+        "details": "POST creates Order + related OrderItem rows from the current cart contents via Prisma against Postgres (Neon/Vercel Postgres) - must be a network-reachable DB, not local SQLite, since this needs to work for a real anonymous visitor on the deployed live link. Cart is cleared client-side on success."
+      },
+      "api_endpoints": ["POST /api/orders", "GET /api/orders/[id]"],
+      "state_management": "Form state local to checkout; clears Zustand cart store after successful order creation",
+      "edge_cases": ["Empty cart at checkout (redirect back)", "Invalid/missing address fields", "Failed order creation -> error state, cart preserved"],
+      "estimated_hours": 2,
+      "rubric_alignment": ["ux_ui", "product_fidelity"]
+    },
+    {
+      "id": "F7",
+      "name": "Footer",
+      "page": "Global (all pages)",
+      "priority": "must_have",
+      "description": "Standard footer with link columns (About, Help, Policies) - static content, no functionality.",
+      "components": ["Footer"],
+      "data_layer": {
+        "type": "client_only",
+        "details": "Static content only."
+      },
+      "api_endpoints": [],
+      "state_management": "None",
+      "edge_cases": [],
+      "estimated_hours": 0.25,
+      "rubric_alignment": ["product_fidelity"]
+    }
+  ],
+  "nice_to_have_features": [
+    {
+      "id": "F8",
+      "name": "Search Autocomplete",
+      "description": "Dropdown of matching product suggestions as the user types in the header search bar.",
+      "estimated_hours": 1,
+      "rubric_alignment": ["product_fidelity", "ux_ui"],
+      "build_if": "Must-have list finishes with time remaining"
+    },
+    {
+      "id": "F9",
+      "name": "Product Reviews & Ratings Display",
+      "description": "Static/seeded star rating and a few mock reviews shown on the PDP (read-only, no submission form).",
+      "estimated_hours": 0.5,
+      "rubric_alignment": ["product_fidelity"],
+      "build_if": "Time remains after checkout flow is solid"
+    },
+    {
+      "id": "F10",
+      "name": "Wishlist",
+      "description": "Heart icon on product cards/PDP to save items to a separate client-side list.",
+      "estimated_hours": 1,
+      "rubric_alignment": ["ux_ui"],
+      "build_if": "Optional - lower priority than search/reviews"
+    },
+    {
+      "id": "F11",
+      "name": "Responsive Mobile Polish",
+      "description": "Pass over breakpoints to ensure header, grids, and cart drawer behave correctly on small screens.",
+      "estimated_hours": 1,
+      "rubric_alignment": ["ux_ui"],
+      "build_if": "Always worth doing if any buffer time remains - judges view the live link themselves, possibly on mobile"
+    },
+    {
+      "id": "F12",
+      "name": "Skeleton Loading States",
+      "description": "Loading placeholders for product grid/PDP while data fetches, instead of blank screens.",
+      "estimated_hours": 0.5,
+      "rubric_alignment": ["ux_ui"],
+      "build_if": "Quick win, do late in the polish pass"
+    }
+  ],
+  "out_of_scope_features": [
+    {
+      "id": "S1",
+      "name": "Real Payment Processing",
+      "reason_skipped": "No real transactions needed for a demo; a payment gateway integration (Stripe etc.) adds setup/testing time disproportionate to its value for a live-link demo.",
+      "mitigation": "Mock payment step in checkout; state this explicitly in README and Loom walkthrough."
+    },
+    {
+      "id": "S2",
+      "name": "Real User Authentication",
+      "reason_skipped": "Full auth (sessions, password reset, etc.) is a large surface area unrelated to the core shopping flow, and the brief requires the live link to work for someone not signed in at all.",
+      "mitigation": "Account menu is a visual stub only; note this as an intentional scope cut."
+    },
+    {
+      "id": "S3",
+      "name": "Real Search Relevance / Personalization",
+      "reason_skipped": "Search relevance ranking and personalized recommendations require data/ML infrastructure far beyond a 1-day scope.",
+      "mitigation": "Client-side substring filter on product name/category is sufficient to demonstrate the search UI."
+    },
+    {
+      "id": "S4",
+      "name": "Third-Party Seller Marketplace",
+      "reason_skipped": "Multi-seller listings, seller dashboards, and marketplace logic are a distinct product surface from the core shopping flow being cloned.",
+      "mitigation": "All products presented as sold by a single storefront."
+    },
+    {
+      "id": "S5",
+      "name": "Real Order Tracking / Shipping Logistics",
+      "reason_skipped": "Shipment tracking integrations and logistics status updates are not observable/testable within the assignment window.",
+      "mitigation": "Confirmation page shows the created order as the end of the flow; no post-purchase tracking UI."
+    }
+  ]
+}
