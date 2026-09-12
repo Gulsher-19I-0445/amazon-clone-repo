@@ -80,7 +80,7 @@
     {
       "id": "F3",
 
-      "status": "in_progress",
+      "status": "completed",
       "name": "Product Listing Page (PLP)",
       "page": "/s (shared with header search, like amazon.com)",
       "priority": "must_have",
