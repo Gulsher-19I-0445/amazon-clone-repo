@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState } from "react";
 
 // Visual stub of "Hello, sign in / Account & Lists". Real authentication is an
@@ -55,6 +56,16 @@ export function AccountMenuStub() {
               Start here.
             </span>
           </p>
+          <div className="mt-3 border-t border-neutral-200 pt-3">
+            <p className="text-sm font-bold">Your Lists</p>
+            <Link
+              href="/wishlist"
+              role="menuitem"
+              className="mt-1 block text-xs text-neutral-700 hover:text-amz-link-hover hover:underline"
+            >
+              Wish List
+            </Link>
+          </div>
           <p className="mt-3 border-t border-neutral-200 pt-3 text-xs text-neutral-600">
             This is a demo store — no account is needed. Browse, add to cart, and check out as a
             guest.

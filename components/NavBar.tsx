@@ -4,8 +4,9 @@ import { categoryLabel, NAV_CATEGORY_SLUGS } from "@/lib/categories";
 const linkClass =
   "whitespace-nowrap rounded-sm border border-transparent px-2 py-1 text-sm hover:border-white";
 
-// Secondary dark row under the main header. Every link lands on the listing
-// page (/s), which handles search, category and deals via URL params.
+// Secondary dark row under the main header. Apart from the Wish List, every
+// link lands on the listing page (/s), which handles search, category and
+// deals via URL params.
 export function NavBar() {
   return (
     <nav
@@ -20,6 +21,9 @@ export function NavBar() {
       </Link>
       <Link href="/s?deals=true" className={`${linkClass} font-bold text-amz-yellow`}>
         Today&apos;s Deals
+      </Link>
+      <Link href="/wishlist" className={linkClass}>
+        Wish List
       </Link>
       {NAV_CATEGORY_SLUGS.map((slug) => (
         <Link key={slug} href={`/s?category=${slug}`} className={linkClass}>

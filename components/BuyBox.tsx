@@ -1,8 +1,9 @@
 import type { NewCartItem } from "@/lib/cart";
 import { stockStatus } from "@/lib/stock";
-import type { Product } from "@/lib/types";
+import type { Product, ProductListItem } from "@/lib/types";
 import { AddToCartPanel } from "./AddToCartPanel";
 import { PriceBlock } from "./PriceBlock";
+import { WishlistButton } from "./WishlistButton";
 
 type BuyBoxProps = {
   product: Product;
@@ -15,7 +16,8 @@ const stockClass = {
 } as const;
 
 // Right-hand purchase column. Server component: it narrows the product down
-// to the plain cart item the client-side panel needs.
+// to the plain shapes the client-side panel and wishlist button need, so the
+// long description and gallery never ride along in the client payload.
 export function BuyBox({ product }: BuyBoxProps) {
   const status = stockStatus(product.stock);
   const cartItem: NewCartItem = {
@@ -24,6 +26,19 @@ export function BuyBox({ product }: BuyBoxProps) {
     priceCents: product.priceCents,
     thumbnail: product.thumbnail,
     stock: product.stock,
+  };
+  const wishlistProduct: ProductListItem = {
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    category: product.category,
+    priceCents: product.priceCents,
+    listPriceCents: product.listPriceCents,
+    rating: product.rating,
+    reviewCount: product.reviewCount,
+    stock: product.stock,
+    thumbnail: product.thumbnail,
+    featured: product.featured,
   };
 
   return (
@@ -47,6 +62,11 @@ export function BuyBox({ product }: BuyBoxProps) {
           <AddToCartPanel item={cartItem} />
         </div>
       )}
+
+      {/* Saving is allowed even when unavailable, as on amazon.com. */}
+      <div className="mt-3">
+        <WishlistButton variant="button" product={wishlistProduct} />
+      </div>
 
       <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs text-neutral-600">
         <dt>Ships from</dt>

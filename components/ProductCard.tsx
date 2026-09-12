@@ -3,6 +3,7 @@ import Link from "next/link";
 import { formatPrice, splitPrice } from "@/lib/format";
 import type { ProductListItem } from "@/lib/types";
 import { StarRating } from "./StarRating";
+import { WishlistButton } from "./WishlistButton";
 
 type ProductCardProps = {
   product: ProductListItem;
@@ -14,15 +15,19 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <article className="flex h-full flex-col rounded-md bg-white p-4 shadow-sm">
-      <Link href={href} className="relative block aspect-square w-full bg-neutral-50">
-        <Image
-          src={product.thumbnail}
-          alt={product.name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-          className="object-contain"
-        />
-      </Link>
+      {/* The heart sits beside the image link, not inside it, so a tap never navigates. */}
+      <div className="relative">
+        <Link href={href} className="relative block aspect-square w-full bg-neutral-50">
+          <Image
+            src={product.thumbnail}
+            alt={product.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            className="object-contain"
+          />
+        </Link>
+        <WishlistButton variant="heart" product={product} />
+      </div>
 
       <Link
         href={href}

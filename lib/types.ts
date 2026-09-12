@@ -40,6 +40,12 @@ export type SuggestionsResponse = {
   suggestions: ProductSuggestion[];
 };
 
+/** Snapshot saved when a product is hearted; /wishlist renders it without a fetch. */
+export type WishlistItem = ProductListItem & {
+  /** ISO timestamp — persisted to localStorage, so never a Date. */
+  addedAt: string;
+};
+
 export type CartItem = {
   productId: string;
   name: string;

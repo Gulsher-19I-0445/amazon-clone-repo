@@ -4,6 +4,7 @@ import { discountPercent } from "@/lib/deals";
 import { formatPrice, splitPrice } from "@/lib/format";
 import type { ProductListItem } from "@/lib/types";
 import { StarRating } from "./StarRating";
+import { WishlistButton } from "./WishlistButton";
 
 export type CarouselVariant = "deals" | "default";
 
@@ -23,15 +24,18 @@ export function CarouselProductCard({ product, variant }: CarouselProductCardPro
 
   return (
     <article className="w-[180px] shrink-0 snap-start sm:w-[210px]">
-      <Link href={href} className="relative block aspect-square w-full bg-neutral-50">
-        <Image
-          src={product.thumbnail}
-          alt={product.name}
-          fill
-          sizes="210px"
-          className="object-contain"
-        />
-      </Link>
+      <div className="relative">
+        <Link href={href} className="relative block aspect-square w-full bg-neutral-50">
+          <Image
+            src={product.thumbnail}
+            alt={product.name}
+            fill
+            sizes="210px"
+            className="object-contain"
+          />
+        </Link>
+        <WishlistButton variant="heart" product={product} />
+      </div>
 
       {showDeal && (
         <div className="mt-2 flex items-center gap-2">
