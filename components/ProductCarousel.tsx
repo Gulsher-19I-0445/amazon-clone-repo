@@ -44,7 +44,10 @@ export function ProductCarousel({ title, products, seeAllHref, variant = "defaul
     <section aria-roledescription="carousel" aria-label={title} className="bg-white p-5 shadow-sm">
       <div className="flex items-baseline gap-4">
         <h2 className="text-xl font-bold">{title}</h2>
-        <Link href={seeAllHref} className="text-sm text-amz-link hover:text-amz-link-hover hover:underline">
+        <Link
+          href={seeAllHref}
+          className="shrink-0 whitespace-nowrap text-sm text-amz-link hover:text-amz-link-hover hover:underline"
+        >
           See all
         </Link>
       </div>

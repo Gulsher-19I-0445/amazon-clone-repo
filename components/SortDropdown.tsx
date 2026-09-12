@@ -20,7 +20,8 @@ export function SortDropdown({ options, current }: SortDropdownProps) {
   const id = useId();
 
   return (
-    <label htmlFor={id} className="flex items-center gap-2 text-xs text-neutral-700">
+    // Below md the select is forced to 16px (globals.css), so the label steps up to match.
+    <label htmlFor={id} className="flex items-center gap-2 text-sm text-neutral-700 md:text-xs">
       <span className="whitespace-nowrap">Sort by:</span>
       <select
         id={id}

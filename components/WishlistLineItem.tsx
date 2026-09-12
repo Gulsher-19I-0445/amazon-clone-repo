@@ -93,7 +93,7 @@ export function WishlistLineItem({ item, onRemove }: WishlistLineItemProps) {
           <span className="text-amz-border" aria-hidden="true">
             |
           </span>
-          <button type="button" onClick={onRemove} className="text-amz-link hover:text-amz-link-hover hover:underline">
+          <button type="button" onClick={onRemove} className="py-1 text-amz-link hover:text-amz-link-hover hover:underline">
             Delete
           </button>
         </div>

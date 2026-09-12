@@ -54,7 +54,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div className="md:col-span-4">
-            <h1 className="text-2xl font-medium leading-snug">{product.name}</h1>
+            <h1 className="text-xl font-medium leading-snug md:text-2xl">{product.name}</h1>
             <div className="mt-1 flex items-center gap-2 text-sm">
               <StarRating rating={product.rating} />
               <a href={`#${CUSTOMER_REVIEWS_ID}`} className="text-amz-link hover:text-amz-link-hover hover:underline">

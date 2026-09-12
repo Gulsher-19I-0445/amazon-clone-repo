@@ -17,7 +17,8 @@ export function CheckoutStep({ number, title, children }: CheckoutStepProps) {
       <h2 id={headingId} className="text-lg font-bold text-neutral-800">
         {title}
       </h2>
-      <div className="col-start-2 mt-3">{children}</div>
+      {/* Below sm the body takes the full width; the number column is too costly on a phone. */}
+      <div className="col-span-2 mt-3 sm:col-2">{children}</div>
     </section>
   );
 }

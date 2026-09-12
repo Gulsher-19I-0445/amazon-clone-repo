@@ -34,8 +34,9 @@ export default function HomePage() {
     <main className="flex-1 pb-8">
       <HeroBanner />
 
-      {/* `relative` so this stacks above the (positioned) hero it overlaps. */}
-      <div className="relative mx-auto -mt-28 flex max-w-[1500px] flex-col gap-5 px-4 lg:-mt-[300px]">
+      {/* `relative` so this stacks above the (positioned) hero it overlaps. The
+          overlap grows with the hero so the slide's button is never covered. */}
+      <div className="relative mx-auto -mt-16 flex max-w-[1500px] flex-col gap-5 px-4 sm:-mt-28 lg:-mt-[300px]">
         <Suspense fallback={<CategoryTileGridSkeleton />}>
           <CategoryTileGrid tiles={topTiles} />
         </Suspense>

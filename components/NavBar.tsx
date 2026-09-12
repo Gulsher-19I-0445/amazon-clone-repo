@@ -2,7 +2,7 @@ import Link from "next/link";
 import { categoryLabel, NAV_CATEGORY_SLUGS } from "@/lib/categories";
 
 const linkClass =
-  "whitespace-nowrap rounded-sm border border-transparent px-2 py-1 text-sm hover:border-white";
+  "whitespace-nowrap rounded-sm border border-transparent px-2 py-1.5 text-sm hover:border-white";
 
 // Secondary dark row under the main header. Apart from the Wish List, every
 // link lands on the listing page (/s), which handles search, category and

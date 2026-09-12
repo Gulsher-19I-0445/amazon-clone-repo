@@ -31,9 +31,10 @@ export function HeroBanner() {
       onMouseLeave={() => setPaused(false)}
       className={`relative h-[300px] overflow-hidden transition-colors duration-500 lg:h-[600px] ${slide.background}`}
     >
-      <div className="mx-auto flex h-full max-w-[1500px] items-start px-14 pt-8 lg:pt-16">
+      {/* Side padding matches the arrow buttons' width so text never sits under them. */}
+      <div className="mx-auto flex h-full max-w-[1500px] items-start px-10 pt-8 sm:px-14 lg:pt-16">
         <div className="max-w-xl text-white drop-shadow-md" aria-live="polite">
-          <h1 className="text-3xl font-bold leading-tight lg:text-5xl">{slide.title}</h1>
+          <h1 className="text-2xl font-bold leading-tight sm:text-3xl lg:text-5xl">{slide.title}</h1>
           <p className="mt-2 text-sm lg:mt-4 lg:text-lg">{slide.subtitle}</p>
           <Link
             href={slide.href}
@@ -51,7 +52,7 @@ export function HeroBanner() {
         type="button"
         onClick={() => goTo(index - 1)}
         aria-label="Previous slide"
-        className="absolute left-0 top-0 flex h-1/2 w-14 items-center justify-center text-white/80 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        className="absolute left-0 top-0 flex h-1/2 w-10 items-center sm:w-14 justify-center text-white/80 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
       >
         <Chevron direction="left" />
       </button>
@@ -59,7 +60,7 @@ export function HeroBanner() {
         type="button"
         onClick={() => goTo(index + 1)}
         aria-label="Next slide"
-        className="absolute right-0 top-0 flex h-1/2 w-14 items-center justify-center text-white/80 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+        className="absolute right-0 top-0 flex h-1/2 w-10 items-center sm:w-14 justify-center text-white/80 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
       >
         <Chevron direction="right" />
       </button>

@@ -14,7 +14,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const href = `/product/${product.id}`;
 
   return (
-    <article className="flex h-full flex-col rounded-md bg-white p-4 shadow-sm">
+    <article className="flex h-full flex-col rounded-md bg-white p-3 shadow-sm sm:p-4">
       {/* The heart sits beside the image link, not inside it, so a tap never navigates. */}
       <div className="relative">
         <Link href={href} className="relative block aspect-square w-full bg-neutral-50">

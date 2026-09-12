@@ -72,7 +72,7 @@ export function CartLineItem({ item, onQuantityChange, onRemove }: CartLineItemP
           <button
             type="button"
             onClick={onRemove}
-            className="text-amz-link hover:text-amz-link-hover hover:underline"
+            className="py-1 text-amz-link hover:text-amz-link-hover hover:underline"
           >
             Delete
           </button>

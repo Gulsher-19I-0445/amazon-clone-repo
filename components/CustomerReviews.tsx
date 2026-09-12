@@ -19,7 +19,8 @@ export function CustomerReviews({ product }: CustomerReviewsProps) {
     <section
       id={CUSTOMER_REVIEWS_ID}
       aria-labelledby="reviews-heading"
-      className="scroll-mt-4 rounded-md bg-white p-4 shadow-sm md:p-6"
+      // The md+ offset clears the sticky header when the "N ratings" link jumps here.
+      className="scroll-mt-4 rounded-md bg-white p-4 shadow-sm md:scroll-mt-28 md:p-6"
     >
       <h2 id="reviews-heading" className="text-xl font-bold">
         Customer reviews

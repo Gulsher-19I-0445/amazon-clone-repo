@@ -15,7 +15,9 @@ function SearchBarFallback() {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 text-white">
+    // On phones the header is three rows (~140px), so it scrolls away like
+    // Amazon's mobile site instead of pinning a fifth of the screen.
+    <header className="top-0 z-40 text-white md:sticky">
       <div className="bg-amz-navy px-2 py-1">
         <div className="flex items-center gap-1 md:gap-2">
           <Logo />

@@ -43,10 +43,13 @@ export function BuyBox({ product }: BuyBoxProps) {
 
   return (
     <div className="rounded-md border border-amz-border p-4">
-      <PriceBlock priceCents={product.priceCents} listPriceCents={product.listPriceCents} size="md" />
+      {/* On phones the box sits right under the title column's price, so it is shown once. */}
+      <div className="hidden md:block">
+        <PriceBlock priceCents={product.priceCents} listPriceCents={product.listPriceCents} size="md" />
+      </div>
 
       {status.kind !== "out" && (
-        <p className="mt-3 text-sm">
+        <p className="text-sm md:mt-3">
           FREE delivery <span className="font-bold">Tomorrow</span>
         </p>
       )}
