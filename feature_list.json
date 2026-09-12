@@ -177,7 +177,7 @@
     {
       "id": "F8",
 
-      "status": "not_started",
+      "status": "in_progress",
       "name": "Search Autocomplete",
       "description": "Dropdown of matching product suggestions as the user types in the header search bar.",
       "estimated_hours": 1,

@@ -32,6 +32,14 @@ export type CatalogResponse = ProductListResponse & {
   pageSize: number;
 };
 
+/** Just enough of a product to draw a search-suggestion row. */
+export type ProductSuggestion = Pick<ProductListItem, "id" | "name" | "category" | "thumbnail">;
+
+/** GET /api/search/suggestions — the whole catalog, filtered client-side. */
+export type SuggestionsResponse = {
+  suggestions: ProductSuggestion[];
+};
+
 export type CartItem = {
   productId: string;
   name: string;

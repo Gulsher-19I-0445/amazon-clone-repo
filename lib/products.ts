@@ -4,7 +4,7 @@ import { cache } from "react";
 import { buildProductOrderBy, buildProductWhere, PAGE_SIZE, type CatalogQuery } from "./catalog";
 import { db } from "./db";
 import type { TileQuadrantProduct } from "./homepage";
-import type { Product, ProductListItem } from "./types";
+import type { Product, ProductListItem, ProductSuggestion } from "./types";
 
 // Columns that make up a ProductListItem. Shared by every list-style read so
 // route handlers and server components return the same shape.
@@ -86,11 +86,27 @@ export function getTopRatedProducts(take: number): Promise<ProductListItem[]> {
   });
 }
 
+/** The bare minimum to draw a thumbnail + name: category tiles, search suggestions. */
+const productSummarySelect = {
+  id: true,
+  category: true,
+  name: true,
+  thumbnail: true,
+} satisfies Prisma.ProductSelect;
+
 /** Thumbnail-sized rows for the homepage category tiles, best rated first. */
 export function getProductsInCategories(slugs: string[]): Promise<TileQuadrantProduct[]> {
   return db.product.findMany({
     where: { category: { in: slugs } },
     orderBy: [{ rating: "desc" }, { id: "asc" }],
-    select: { id: true, category: true, name: true, thumbnail: true },
+    select: productSummarySelect,
+  });
+}
+
+/** Every product, name-sorted, for the header's client-side autocomplete. */
+export function getSuggestionIndex(): Promise<ProductSuggestion[]> {
+  return db.product.findMany({
+    orderBy: { name: "asc" },
+    select: productSummarySelect,
   });
 }

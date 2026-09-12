@@ -41,6 +41,11 @@ Search, category browsing and deals all land on `/s`, like amazon.com. The URL i
 `page`, `deals=true`); `lib/catalog.ts` parses it into a Prisma query and `GET /api/products` accepts the
 same params. Filters are plain links and a GET form, so the page works without JavaScript.
 
+**Search autocomplete**: the header fetches the whole catalog as lightweight rows once (`GET
+/api/search/suggestions`, ~15 KB, CDN-cached) the first time the box is focused and filters it in the browser
+(`lib/suggestions.ts`, unit-tested), so suggestions never wait on a serverless round-trip. Rows link to the
+product; Enter with no row highlighted runs the normal search.
+
 ## Cart (`/cart`)
 
 Fully client-side: `store/cart.ts` (Zustand + `persist`) keeps the cart in this browser's `localStorage`, so it
