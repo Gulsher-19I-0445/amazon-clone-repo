@@ -27,7 +27,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
-  // Resolved before any JSX so a missing product is a real 404, not a streamed 200.
+  // Resolved before any JSX so notFound() fires before product markup streams.
+  // Because loading.tsx wraps this page in a Suspense boundary, a direct load of
+  // an unknown id still streams not-found.tsx with a 200 + robots noindex rather
+  // than a 404 status; a real 404 would need a DB check ahead of the boundary.
   const product = await getProductById(id);
   if (product === null) notFound();
 

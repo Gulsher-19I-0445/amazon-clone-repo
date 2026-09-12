@@ -217,7 +217,7 @@
     {
       "id": "F12",
 
-      "status": "not_started",
+      "status": "in_progress",
       "name": "Skeleton Loading States",
       "description": "Loading placeholders for product grid/PDP while data fetches, instead of blank screens.",
       "estimated_hours": 0.5,

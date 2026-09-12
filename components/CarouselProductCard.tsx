@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 import { discountPercent } from "@/lib/deals";
 import { formatPrice, splitPrice } from "@/lib/format";
 import type { ProductListItem } from "@/lib/types";
+import { HoverPrefetchLink } from "./HoverPrefetchLink";
 import { StarRating } from "./StarRating";
 import { WishlistButton } from "./WishlistButton";
 
@@ -25,7 +25,7 @@ export function CarouselProductCard({ product, variant }: CarouselProductCardPro
   return (
     <article className="w-[180px] shrink-0 snap-start sm:w-[210px]">
       <div className="relative">
-        <Link href={href} className="relative block aspect-square w-full bg-neutral-50">
+        <HoverPrefetchLink href={href} className="relative block aspect-square w-full bg-neutral-50">
           <Image
             src={product.thumbnail}
             alt={product.name}
@@ -33,7 +33,7 @@ export function CarouselProductCard({ product, variant }: CarouselProductCardPro
             sizes="210px"
             className="object-contain"
           />
-        </Link>
+        </HoverPrefetchLink>
         <WishlistButton variant="heart" product={product} />
       </div>
 
@@ -59,9 +59,9 @@ export function CarouselProductCard({ product, variant }: CarouselProductCardPro
         )}
       </div>
 
-      <Link href={href} className="mt-1 line-clamp-2 text-sm leading-snug hover:text-amz-link-hover">
+      <HoverPrefetchLink href={href} className="mt-1 line-clamp-2 text-sm leading-snug hover:text-amz-link-hover">
         {product.name}
-      </Link>
+      </HoverPrefetchLink>
 
       {variant === "default" && <StarRating rating={product.rating} reviewCount={product.reviewCount} />}
     </article>

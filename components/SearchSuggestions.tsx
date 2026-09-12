@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { categoryLabel } from "@/lib/categories";
 import { splitMatch } from "@/lib/suggestions";
 import type { ProductSuggestion } from "@/lib/types";
+import { HoverPrefetchLink } from "./HoverPrefetchLink";
 
 type SearchSuggestionsProps = {
   /** Listbox id; the input's aria-controls points here and option ids derive from it. */
@@ -61,7 +61,7 @@ export function SearchSuggestions({
                 aria-selected={active}
                 onMouseEnter={() => onHover(index)}
               >
-                <Link
+                <HoverPrefetchLink
                   href={`/product/${product.id}`}
                   tabIndex={-1}
                   onClick={onPick}
@@ -78,7 +78,7 @@ export function SearchSuggestions({
                     </span>
                     <span className="block text-xs text-neutral-500">in {categoryLabel(product.category)}</span>
                   </span>
-                </Link>
+                </HoverPrefetchLink>
               </li>
             );
           })}

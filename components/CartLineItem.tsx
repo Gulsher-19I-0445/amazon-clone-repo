@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { formatPrice } from "@/lib/format";
 import { MAX_QTY_PER_ADD, quantityOptions, stockStatus } from "@/lib/stock";
 import type { CartItem } from "@/lib/types";
+import { HoverPrefetchLink } from "./HoverPrefetchLink";
 
 type CartLineItemProps = {
   item: CartItem;
@@ -30,15 +30,18 @@ export function CartLineItem({ item, onQuantityChange, onRemove }: CartLineItemP
 
   return (
     <li className="flex gap-3 border-b border-amz-border py-4 last:border-b-0 sm:gap-4">
-      <Link href={href} className="relative block h-24 w-24 shrink-0 bg-neutral-50 sm:h-44 sm:w-44">
+      <HoverPrefetchLink href={href} className="relative block h-24 w-24 shrink-0 bg-neutral-50 sm:h-44 sm:w-44">
         <Image src={item.thumbnail} alt={item.name} fill sizes="(min-width: 640px) 176px, 96px" className="object-contain" />
-      </Link>
+      </HoverPrefetchLink>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="flex items-start justify-between gap-3">
-          <Link href={href} className="line-clamp-3 text-base font-medium leading-snug hover:text-amz-link-hover sm:text-lg">
+          <HoverPrefetchLink
+            href={href}
+            className="line-clamp-3 text-base font-medium leading-snug hover:text-amz-link-hover sm:text-lg"
+          >
             {item.name}
-          </Link>
+          </HoverPrefetchLink>
           <div className="shrink-0 text-right">
             <p className="text-lg font-bold">{formatPrice(item.priceCents * item.qty)}</p>
             {item.qty > 1 && <p className="text-xs text-neutral-600">{formatPrice(item.priceCents)} each</p>}

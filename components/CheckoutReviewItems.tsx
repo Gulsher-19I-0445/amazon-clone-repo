@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/format";
 import type { OrderItemDto } from "@/lib/types";
+import { HoverPrefetchLink } from "./HoverPrefetchLink";
 
 type CheckoutReviewItemsProps = {
   items: OrderItemDto[];
@@ -17,16 +18,16 @@ export function CheckoutReviewItems({ items, changeHref }: CheckoutReviewItemsPr
       <ul className="flex flex-col divide-y divide-amz-border">
         {items.map((item) => (
           <li key={item.productId} className="flex gap-3 py-3 first:pt-0 last:pb-0">
-            <Link href={`/product/${item.productId}`} className="relative block h-20 w-20 shrink-0 bg-neutral-50">
+            <HoverPrefetchLink href={`/product/${item.productId}`} className="relative block h-20 w-20 shrink-0 bg-neutral-50">
               <Image src={item.thumbnail} alt={item.name} fill sizes="80px" className="object-contain" />
-            </Link>
+            </HoverPrefetchLink>
             <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-sm">
-              <Link
+              <HoverPrefetchLink
                 href={`/product/${item.productId}`}
                 className="line-clamp-2 font-medium leading-snug hover:text-amz-link-hover hover:underline"
               >
                 {item.name}
-              </Link>
+              </HoverPrefetchLink>
               <span className="font-bold text-amz-price">{formatPrice(item.unitPriceCents)}</span>
               <span className="text-xs text-neutral-600">Quantity: {item.qty}</span>
             </div>

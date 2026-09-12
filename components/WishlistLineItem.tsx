@@ -8,6 +8,7 @@ import { formatLongDate, formatPrice, splitPrice } from "@/lib/format";
 import { addableQuantity, stockStatus } from "@/lib/stock";
 import type { WishlistItem } from "@/lib/types";
 import { useCartStore } from "@/store/cart";
+import { HoverPrefetchLink } from "./HoverPrefetchLink";
 import { StarRating } from "./StarRating";
 
 type WishlistLineItemProps = {
@@ -55,14 +56,17 @@ export function WishlistLineItem({ item, onRemove }: WishlistLineItemProps) {
 
   return (
     <li className="flex gap-3 border-b border-amz-border py-4 last:border-b-0 sm:gap-4">
-      <Link href={href} className="relative block h-24 w-24 shrink-0 bg-neutral-50 sm:h-40 sm:w-40">
+      <HoverPrefetchLink href={href} className="relative block h-24 w-24 shrink-0 bg-neutral-50 sm:h-40 sm:w-40">
         <Image src={item.thumbnail} alt={item.name} fill sizes="(min-width: 640px) 160px, 96px" className="object-contain" />
-      </Link>
+      </HoverPrefetchLink>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <Link href={href} className="line-clamp-3 text-base font-medium leading-snug hover:text-amz-link-hover sm:text-lg">
+        <HoverPrefetchLink
+          href={href}
+          className="line-clamp-3 text-base font-medium leading-snug hover:text-amz-link-hover sm:text-lg"
+        >
           {item.name}
-        </Link>
+        </HoverPrefetchLink>
         <StarRating rating={item.rating} reviewCount={item.reviewCount} />
 
         <div className="flex items-baseline gap-2">

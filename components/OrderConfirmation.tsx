@@ -111,3 +111,63 @@ export function OrderConfirmation({ order }: OrderConfirmationProps) {
     </div>
   );
 }
+
+const bar = "rounded bg-neutral-200";
+
+/** Same footprint as the confirmation above, shown while the order is read back. */
+export function OrderConfirmationSkeleton() {
+  return (
+    <div aria-busy="true" aria-label="Loading your order" className="grid animate-pulse grid-cols-1 gap-4 md:grid-cols-[1fr_300px] md:items-start">
+      <div className="flex flex-col gap-4">
+        <section className="rounded-md bg-white p-5 shadow-sm sm:p-6">
+          <div className="flex items-start gap-3">
+            <div className="h-9 w-9 shrink-0 rounded-full bg-neutral-200" />
+            <div>
+              <div className={`h-7 w-56 ${bar}`} />
+              <div className={`mt-2 h-4 w-72 max-w-full ${bar}`} />
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-1 gap-3 border-t border-amz-border pt-4 sm:grid-cols-2">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i}>
+                <div className={`h-3 w-24 ${bar}`} />
+                <div className={`mt-1.5 h-4 w-40 ${bar}`} />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-md bg-white p-5 shadow-sm sm:p-6">
+          <div className={`h-6 w-64 max-w-full ${bar}`} />
+          <div className={`mt-2 h-3 w-32 ${bar}`} />
+          <div className="mt-4 flex flex-col gap-3">
+            {[0, 1].map((i) => (
+              <div key={i} className="flex gap-3">
+                <div className="h-20 w-20 shrink-0 rounded bg-neutral-100" />
+                <div className="flex-1 space-y-2">
+                  <div className={`h-4 w-3/4 ${bar}`} />
+                  <div className={`h-4 w-16 ${bar}`} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="flex flex-wrap gap-3">
+          <div className="h-9 w-40 rounded-full bg-neutral-200" />
+          <div className="h-9 w-40 rounded-full bg-neutral-100" />
+        </div>
+      </div>
+
+      <div className="rounded-md bg-white p-5 shadow-sm">
+        <div className={`h-5 w-32 ${bar}`} />
+        <div className="mt-4 space-y-2">
+          <div className={`h-4 w-full ${bar}`} />
+          <div className={`h-4 w-full ${bar}`} />
+          <div className={`h-4 w-full ${bar}`} />
+        </div>
+        <div className={`mt-4 h-6 w-2/3 ${bar}`} />
+      </div>
+    </div>
+  );
+}

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { formatPrice, splitPrice } from "@/lib/format";
 import type { ProductListItem } from "@/lib/types";
+import { HoverPrefetchLink } from "./HoverPrefetchLink";
 import { StarRating } from "./StarRating";
 import { WishlistButton } from "./WishlistButton";
 
@@ -17,7 +17,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <article className="flex h-full flex-col rounded-md bg-white p-3 shadow-sm sm:p-4">
       {/* The heart sits beside the image link, not inside it, so a tap never navigates. */}
       <div className="relative">
-        <Link href={href} className="relative block aspect-square w-full bg-neutral-50">
+        <HoverPrefetchLink href={href} className="relative block aspect-square w-full bg-neutral-50">
           <Image
             src={product.thumbnail}
             alt={product.name}
@@ -25,16 +25,16 @@ export function ProductCard({ product }: ProductCardProps) {
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             className="object-contain"
           />
-        </Link>
+        </HoverPrefetchLink>
         <WishlistButton variant="heart" product={product} />
       </div>
 
-      <Link
+      <HoverPrefetchLink
         href={href}
         className="mt-3 line-clamp-2 text-base leading-snug text-neutral-900 hover:text-amz-link-hover"
       >
         {product.name}
-      </Link>
+      </HoverPrefetchLink>
 
       <StarRating rating={product.rating} reviewCount={product.reviewCount} />
 
